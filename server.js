@@ -21,11 +21,23 @@ io.on("connection", newConnection) //all'evento "connection" esegui "newConnecti
 function newConnection(socket){
   console.log("new connection: " + socket.client.id)   //mostra codice connessione cliente
 
+  let clienColor = getRandomColor();
+  socket.emit("color", clienColor);   //manda messaggio "color" con result di getRandomColor
+
   socket.on("mouse", mouseMessage);  //se arriva un messaggio di tipo "mouse" dal client(nello sketch), mouseMessage()
 
   function mouseMessage(dataReceived){
     console.log(socket.client.id, dataReceived);
     socket.broadcast.emit("mouseBroadcast", dataReceived) //crea nuovo messaggio da emettere a ogni client
   }
+}
 
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
 }
