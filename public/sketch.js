@@ -1,12 +1,30 @@
+let socket = io();
+
+socket.on("connect", newConnection); //quando mi connetto, chiama funzione newConnection
+
+function newConnection(){
+  console.log("your ID: " + socket.id) //mostra mio codice connessione
+}
+
 function preload(){
-  // put preload code here
 }
 
 function setup() {
   createCanvas(windowWidth,windowHeight)
-  // put setup code here
+
+  background("red")
 }
 
 function draw() {
-  // put drawing code here
+}
+
+function mouseMoved(){
+  ellipse(mouseX, mouseY, 20);
+  //crea messaggio
+  let message = {
+    x: mouseX,
+    y: mouseY
+  };
+  //send to the server
+  socket.emit("mouse", message);
 }

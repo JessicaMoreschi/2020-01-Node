@@ -3,6 +3,7 @@ console.log("node is running")
 
 // crea local server
 let express = require("express"); //Load the express code
+let socket = require("socket.io"); //Load the socket package
 let app = express(); //create local host
 let port = 3000;  //dichiara server port (3000 standard)
 let server = app.listen(port);  //aspetta che qualcuno si connetta (da browser "localhost:3000")
@@ -10,3 +11,20 @@ let server = app.listen(port);  //aspetta che qualcuno si connetta (da browser "
 
 //crea folder per client ("public")
 app.use(express.static("public")); //mostra ai clienti la certella public
+
+
+//crea connessione input/output
+let io = socket(server)//variabile input output: crea connessione input (da cliente to server)
+io.on("connection", newConnection) //all'evento "connection" esegui "newConnection()"
+                                   // = esegui ogni volta che si crea una nuova connessione
+
+function newConnection(socket){
+  console.log("new connection: " + socket.client.id)   //mostra codice connessione cliente
+
+  socket.on("mouse", mouseMessage);  //se arriva un messaggio di tipo "mouse dal client"(nello sketch), mouseMessage()
+
+  function mouseMessage(dataReceived){
+    console.log(dataReceived)
+  }
+
+}
