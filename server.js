@@ -21,10 +21,11 @@ io.on("connection", newConnection) //all'evento "connection" esegui "newConnecti
 function newConnection(socket){
   console.log("new connection: " + socket.client.id)   //mostra codice connessione cliente
 
-  socket.on("mouse", mouseMessage);  //se arriva un messaggio di tipo "mouse dal client"(nello sketch), mouseMessage()
+  socket.on("mouse", mouseMessage);  //se arriva un messaggio di tipo "mouse" dal client(nello sketch), mouseMessage()
 
   function mouseMessage(dataReceived){
-    console.log(dataReceived)
+    console.log(socket.client.id, dataReceived);
+    socket.broadcast.emit("mouseBroadcast", dataReceived) //crea nuovo messaggio da emettere a ogni client
   }
 
 }
